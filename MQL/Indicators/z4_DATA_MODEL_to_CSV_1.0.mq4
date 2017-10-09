@@ -20,7 +20,6 @@ extern int end     = 1;
 static string   sSymbols[100];
 static int      iSymbols;
 static datetime tPreviousTime;
-int             DB; // database identifier
 int             s;
 int             i;
 string          sPeriod = "," + PeriodToStr();
@@ -57,8 +56,6 @@ int start()
     // only load the Symbols once into the array "sSymbols"
     if (iSymbols == 0)
         iSymbols = Symbols(sSymbols) / divider;
-
-    //Print (MySqlVersion());
 
     if (Refresh() == true)
     {
@@ -100,8 +97,6 @@ string make_symbol(string text)
 
 void DoExport()
 {
-    string Query;
-    int    i, Cursor, Rows;
     int    filehandle;
 
     for (s = start * iSymbols; s <= iSymbols * end; s++)
@@ -125,7 +120,7 @@ void DoExport()
                     filehandle = -999;
                 }
 
-                for (i = 0; i <= iBars(sSymbols[s], day) - 1; i++)
+                for (int i = 0; i <= iBars(sSymbols[s], day) - 1; i++)
                 {
                     date_time = TimeToStr(iTime(sSymbols[s], day, i), TIME_DATE | TIME_MINUTES | TIME_SECONDS);
                     open      = DoubleToStr(iOpen(sSymbols[s], day, i), 5);
